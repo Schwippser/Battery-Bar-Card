@@ -1,1 +1,1 @@
-Battery-Bar-Card
+HA-Battery-Bar-Card
