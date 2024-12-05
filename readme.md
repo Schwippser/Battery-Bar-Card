@@ -1,4 +1,4 @@
-Eine Kombination mehrerer Cards zu einer Battery-Bar-Card
+Eine Kombination mehrerer Cards zu einer Battery-Bar-Card für den Homeassistant
 
 benötigt:
   - custom:stack-in-card
