@@ -1,0 +1,120 @@
+type: custom:stack-in-card
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: custom:mushroom-template-card
+        layout: vertical
+        entity: sensor.hub_1200_1_sf1_output_pack_power
+        fill_container: true
+        primary: Battery 1
+        secondary: ""
+        icon: ""
+        icon_color: ""
+        multiline_secondary: true
+        tap_action:
+          action: more-info
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+      - type: custom:mushroom-template-card
+        entity: sensor.hub_1200_1_sf1_output_pack_power
+        fill_container: true
+        primary: |-
+          {% if states('sensor.hub_1200_1_sf1_pack_state') == '0' %}
+          Standby
+          {% elif states('sensor.hub_1200_1_sf1_pack_state') == '1' %}Charging
+          {% elif states('sensor.hub_1200_1_sf1_pack_state') == '2' %}
+          Discharging
+          {% endif %}
+        secondary: ""
+        icon: ""
+        icon_color: ""
+        multiline_secondary: true
+        tap_action:
+          action: more-info
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+  - type: horizontal-stack
+    cards:
+      - type: custom:bar-card
+        animation:
+          state: "on"
+          speed: "2"
+        min: "0"
+        max: "100"
+        direction: up
+        height: 150px
+        width: 100px
+        positions:
+          name: "off"
+          icon: "off"
+          indicator: "on"
+        entities:
+          - entity: sensor.hub_1200_1_sf1_electric_level
+            name: Battery 1
+        card_mod:
+          style: |
+
+            bar-card-name {
+              font-size: 1rem;
+              font-weight: 300;
+            }
+            bar-card-value {
+              font-size: 1.6rem;
+              font-weight: 300;
+            }  
+            bar-card-backgroundbar {
+              border: solid white 1px;
+              border-radius: 12px;
+              opacity: 1;
+              background: linear-gradient(to bottom, #004045 15%, #038c96 30%, #00ad9f 75%, green 95%);
+              transform: rotate(180deg);
+            }
+            bar-card-currentbar {
+              border: solid grey 1px;
+              border-radius: 12px;
+              transform: rotate(180deg);
+              background: linear-gradient(145deg, #002629, #004045);
+              clip-path: xywh(0 var(--bar-percent) 100% 100% round 0% 0);          
+            }
+      - type: custom:mushroom-template-card
+        primary: ""
+        secondary: >-
+          Power: {% if states('sensor.hub_1200_1_sf1_pack_state') == '0' %}0 W
+          {% elif states('sensor.hub_1200_1_sf1_pack_state') == '1'
+            %}{{states('sensor.hub_1200_1_sf1_output_pack_power')}} W{% elif
+            states('sensor.hub_1200_1_sf1_pack_state') == '2' %} -{{states('sensor.hub_1200_1_sf1_pack_input_power')}} W{% endif%}
+          Voltage: {{states('sensor.hub_1200_1_sf1_batterie_1_totalvol')}} V
+
+          maxVol: {{states('sensor.hub_1200_1_sf1_batterie_1_maxvol')}} V
+
+          minVol: {{states('sensor.hub_1200_1_sf1_batterie_1_minvol')}} V
+
+          Capacity: 1,92 kWh
+
+          Left: {% if is_state('sensor.hub_1200_1_sf1_electric_level', '0.0')
+          %}0.0{% else %}{% set level =
+          states('sensor.hub_1200_1_sf1_electric_level') | int(2) %}{{ (1.92 *
+          ((level)) / 100) | round(2) }} kWh{% endif %}
+
+          Temperature: {{states('sensor.hub_1200_1_sf1_batterie_1_maxtemp')}} °C
+        icon: ""
+        icon_color: ""
+        multiline_secondary: true
+        fill_container: true
+        tap_action:
+          action: none
+        hold_action:
+          action: none
+        double_tap_action:
+          action: none
+        layout: horizontal
+        card_mod:
+          style: |
+            :host {
+              --mush-card-primary-font-weight: 500;
+              --mush-card-secondary-font-size: var(--primary-font-size);
+            }
